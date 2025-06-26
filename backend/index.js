@@ -4,6 +4,8 @@ const http = require('http');
 const socketIo = require('socket.io');
 const cors = require('cors'); // Import cors package
 
+
+
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
@@ -15,7 +17,7 @@ const io = socketIo(server, {
 
 // Use cors middleware
 app.use(cors());
-
+app.use(express.static('public'));
 const users = {};
 
 io.on('connection', socket => {
