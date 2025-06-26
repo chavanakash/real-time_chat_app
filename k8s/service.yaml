@@ -3,10 +3,10 @@ kind: Service
 metadata:
   name: chat-app-service
 spec:
-  type: LoadBalancer
+  type: NodePort
   selector:
     app: chat-app
   ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 8000
+    - port: 80
+      targetPort: 3000
+      nodePort: 30001   # Optional: pick any available port between 30000–32767
