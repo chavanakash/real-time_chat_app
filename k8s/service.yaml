@@ -9,4 +9,4 @@ spec:
   ports:
     - port: 80
       targetPort: 3000
-      nodePort: 30001   # Optional: pick any available port between 30000–32767
+      nodePort: 31036
