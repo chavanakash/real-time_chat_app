@@ -71,8 +71,8 @@ real-time_chat_app/
 
 ## Authors
 
-- [Your Name]
-- [Contributors]
+- Akash Sabavath
+
 
 ---
 
