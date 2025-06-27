@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // Pulls code from the same repo configured in Jenkins job
+                // Clone your GitHub repo
                 checkout scm
             }
         }
@@ -17,7 +17,8 @@ pipeline {
             steps {
                 script {
                     echo "🔨 Building Docker image: $DOCKER_IMAGE"
-                    sh "docker build -t $DOCKER_IMAGE -f backend/Dockerfile ."
+                    // Build from Dockerfile located in backend/
+                    sh "docker build -t $DOCKER_IMAGE backend/"
                 }
             }
         }
