@@ -8,7 +8,6 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // Clone your GitHub repo
                 checkout scm
             }
         }
@@ -17,7 +16,6 @@ pipeline {
             steps {
                 script {
                     echo "🔨 Building Docker image: $DOCKER_IMAGE"
-                    // Build from Dockerfile located in backend/
                     sh "docker build -t $DOCKER_IMAGE backend/"
                 }
             }
@@ -39,8 +37,11 @@ pipeline {
             steps {
                 script {
                     echo "📦 Deploying to Kubernetes cluster..."
-                    sh 'kubectl apply -f k8s/deployment.yaml'
-                    sh 'kubectl apply -f k8s/service.yaml'
+                    sh '''
+                        export KUBECONFIG=/var/lib/jenkins/.kube/config
+                        kubectl apply -f k8s/deployment.yaml
+                        kubectl apply -f k8s/service.yaml
+                    '''
                 }
             }
         }
