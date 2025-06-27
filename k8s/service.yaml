@@ -3,9 +3,10 @@ kind: Service
 metadata:
   name: chat-app-service
 spec:
-  type: LoadBalancer
+  type: NodePort
   selector:
     app: chat-app
   ports:
     - port: 80
       targetPort: 8000
+      nodePort: 32311  # Or let Kubernetes auto-assign (remove this line)
