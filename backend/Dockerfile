@@ -1,14 +1,11 @@
-# Dockerfile (place it at the root of the Git repo)
-
 FROM node:18-alpine
 
 WORKDIR /app
 
-COPY backend/package*.json ./
+COPY package*.json ./
 RUN npm install
 
-COPY backend/. .
-COPY public ./public
+COPY . .
 
 EXPOSE 8000
 
