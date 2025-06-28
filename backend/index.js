@@ -1,24 +1,28 @@
-
 const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
-const cors = require('cors'); // Import cors package
-
-
+const cors = require('cors');
 
 const app = express();
 const server = http.createServer(app);
+
 const io = socketIo(server, {
     cors: {
-        origin: "*", // Allow all origins for simplicity, restrict as needed
+        origin: "*", // Allow all origins
         methods: ["GET", "POST"]
     }
 });
 
-// Use cors middleware
+// Middleware
 app.use(cors());
 app.use(express.static('public'));
+
 const users = {};
+
+// Routes
+app.get('/', (req, res) => {
+    res.send('✅ Chat App Backend is live and running!');
+});
 
 io.on('connection', socket => {
     socket.on('new-user-joined', name => {
@@ -37,7 +41,7 @@ io.on('connection', socket => {
     });
 });
 
+// Start server
 server.listen(8000, () => {
     console.log('Server is running on http://localhost:8000');
 });
-
