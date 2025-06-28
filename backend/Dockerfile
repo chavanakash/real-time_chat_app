@@ -2,12 +2,16 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-COPY package*.json ./
+# Copy package files from backend/
+COPY backend/package*.json ./
 
 RUN npm install
 
-COPY . .        # This copies only files inside backend/
-COPY ../public ./public  # <-- This brings in the public/ folder from parent dir
+# Copy backend app source code
+COPY backend/. .
+
+# Copy public folder from root directory (outside backend)
+COPY public ./public
 
 EXPOSE 8000
 
