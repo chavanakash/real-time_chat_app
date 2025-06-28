@@ -1,4 +1,6 @@
-const socket = io(window.location.origin);
+// const socket = io(window.location.origin);
+const socket = io("http://51.20.25.227:32311");
+
 
 const form = document.getElementById('send-container');
 const messageInput = document.getElementById('messageInp');
