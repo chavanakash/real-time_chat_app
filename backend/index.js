@@ -2,31 +2,28 @@ const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
 const cors = require('cors');
+const path = require('path');
 
 const app = express();
 const server = http.createServer(app);
-
 const io = socketIo(server, {
     cors: {
-        origin: "*", // Allow all origins
+        origin: "*",
         methods: ["GET", "POST"]
     }
 });
 
-// Middleware
 app.use(cors());
-app.use(express.static('public'));
-app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/public/index.html');
-});
 
+// Serve static files from the 'public' directory
+app.use(express.static(path.join(__dirname, '../public')));
+
+// 👇 Add this route to serve index.html on root
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public/index.html'));
+});
 
 const users = {};
-
-// Routes
-app.get('/', (req, res) => {
-    res.send('✅ Chat App Backend is live and running!');
-});
 
 io.on('connection', socket => {
     socket.on('new-user-joined', name => {
@@ -45,8 +42,6 @@ io.on('connection', socket => {
     });
 });
 
-// Start server
-server.listen(8000, '0.0.0.0', () => {
-    console.log('Server is running on http://0.0.0.0:8000');
+server.listen(8000, () => {
+    console.log('Server is running on http://localhost:8000');
 });
-
