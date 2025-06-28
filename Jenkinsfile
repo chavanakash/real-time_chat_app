@@ -16,7 +16,7 @@ pipeline {
             steps {
                 script {
                     echo "🔨 Building Docker image: $DOCKER_IMAGE"
-                    sh "docker build -t $DOCKER_IMAGE backend/"
+                    sh "docker build -t $DOCKER_IMAGE . -f backend/Dockerfile"
                 }
             }
         }
@@ -26,8 +26,12 @@ pipeline {
                 script {
                     echo "🚀 Pushing image to Docker Hub..."
                     withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                        sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
-                        sh "docker push $DOCKER_IMAGE"
+                        sh '''
+                            set -e
+                            echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+                            docker push $DOCKER_IMAGE
+                            docker logout
+                        '''
                     }
                 }
             }
@@ -38,6 +42,7 @@ pipeline {
                 script {
                     echo "📦 Deploying to Kubernetes cluster..."
                     sh '''
+                        set -e
                         export KUBECONFIG=/var/lib/jenkins/.kube/config
                         kubectl apply -f k8s/deployment.yaml
                         kubectl apply -f k8s/service.yaml
